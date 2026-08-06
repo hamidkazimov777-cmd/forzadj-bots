@@ -55,7 +55,10 @@ function readBody(req: http.IncomingMessage): Promise<Buffer> {
  * администратору превью с кнопками Edit/Publish/Reject.
  */
 export function startIngestServer(bot: Bot, adminChatId: number): void {
-  const port = Number(process.env.MODERATION_INGEST_PORT ?? 8790);
+  // Боты живут на Railway: порт назначается через $PORT, слушаем на 0.0.0.0
+  // (публичный ingest, куда сайт присылает заявки на модерацию).
+  const port = Number(process.env.PORT ?? process.env.MODERATION_INGEST_PORT ?? 8790);
+  const host = "0.0.0.0";
   const secret = process.env.MODERATION_INGEST_SECRET;
   if (!secret) {
     console.error("Error: MODERATION_INGEST_SECRET is missing.");

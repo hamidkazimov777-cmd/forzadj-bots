@@ -5,6 +5,8 @@
   "description": "ForzaDJ moderation & support Telegram bots (VPS, pm2)",
   "scripts": {
     "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
     "dev:support": "tsx src/support/index.ts",
     "dev:moderation": "tsx src/moderation/index.ts",
     "start:support": "node dist/support/index.js",
