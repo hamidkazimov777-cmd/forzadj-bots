@@ -2,7 +2,7 @@ import http from "http";
 import { writeFile, mkdir } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
-import type { Bot } from "grammy";
+import { InputFile, type Bot } from "grammy";
 import { pendingStore, type PendingModeration } from "./pending.js";
 import { getArtworkPath } from "./artwork.js";
 import { buildPreviewText, buildPreviewKeyboard } from "./preview.js";
@@ -106,6 +106,20 @@ export function startIngestServer(bot: Bot, adminChatId: number): void {
 
       const size = pendingStore.push(adminChatId, item);
       const pos = size; // новая заявка встаёт в конец
+
+      // Сначала — сам трек как аудио (чтобы прослушать прямо в Telegram).
+      // Bot API отдаёт файлы до 50 МБ; для больших файлов sendAudio упадёт —
+      // тогда просто пропускаем аудио, карточка с кнопками всё равно уходит.
+      try {
+        await bot.api.sendAudio(adminChatId, new InputFile(filePath, body.fileName), {
+          title: item.title || undefined,
+          performer: item.artist || undefined,
+        });
+      } catch (err) {
+        console.error("[moderation-ingest] sendAudio failed (файл может быть >50МБ):", err);
+      }
+
+      // Затем — карточка с метаданными и кнопками Edit/Publish/Reject.
       await bot.api.sendMessage(adminChatId, buildPreviewText(item, pos, size), {
         reply_markup: buildPreviewKeyboard(),
       });
