@@ -121,7 +121,7 @@ export function startIngestServer(bot: Bot, adminChatId: number): void {
     }
   });
 
-  server.listen(port, "127.0.0.1", () => {
-    console.log(`[moderation-ingest] listening on 127.0.0.1:${port}`);
+  server.listen(port, host, () => {
+    console.log(`[moderation-ingest] listening on ${host}:${port} (PORT=${process.env.PORT ?? "unset"})`);
   });
 }
