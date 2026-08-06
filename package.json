@@ -1,0 +1,26 @@
+{
+  "name": "forzadj-bots",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ForzaDJ moderation & support Telegram bots (VPS, pm2)",
+  "scripts": {
+    "build": "tsc",
+    "dev:support": "tsx src/support/index.ts",
+    "dev:moderation": "tsx src/moderation/index.ts",
+    "start:support": "node dist/support/index.js",
+    "start:moderation": "node dist/moderation/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "grammy": "^1.30.0",
+    "undici": "^8.10.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
+  }
+}
