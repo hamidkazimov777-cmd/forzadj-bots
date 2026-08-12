@@ -1,70 +1,27 @@
-# ForzaDJ Bots
+<div align="center">
 
-Telegram bots for the **[ForzaDJ](https://forzadj.ru)** DJ-pool ecosystem —
-moderation of user-submitted tracks and a support inbox. Built with
-[grammY](https://grammy.dev) and TypeScript, deployed on Railway.
+# ForzaDJ Moderation & Support Bots
 
-🌐 **Live site:** https://forzadj.ru
+**Automated operations layer for ForzaDJ**
 
----
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)]()
+[![grammY](https://img.shields.io/badge/grammY-007ACC?style=flat-square&logo=telegram&logoColor=white)]()
 
-## What's inside
-
-One Node process runs **both bots** plus an HTTP ingest endpoint:
-
-- **Moderation bot** (`@forzadj_creator_bot`) — receives user track submissions
-  from the site via an HTTP ingest, sends the admin the playable audio + a review
-  card (**Edit / Publish / Reject**). On *Publish* the track is published through
-  the site's existing publish endpoint (`POST /api/bot/upload`) — publishing logic
-  is **not duplicated** here. The decision is reported back to the site, which
-  updates the submission status and notifies the user.
-- **Support bot** (`@forza_sup_bot`) — support inbox; tickets are delivered from
-  the site directly via the bot token.
-
-```
-Site  →  POST /ingest (audio + metadata)  →  Moderation bot
-      →  admin reviews (Edit / Publish / Reject)
-      →  Publish → site /api/bot/upload → catalog
-      →  status callback → site updates & notifies the user
-```
-
-## Tech stack
-
-TypeScript · grammY · undici · Node HTTP · Railway (NIXPACKS)
-
-## Project structure
-
-```
-src/
-├── index.ts              # Combined entrypoint (both bots + ingest)
-├── shared/               # allowlist auth + env config
-├── support/index.ts      # Support bot
-└── moderation/           # Moderation bot: ingest, preview, publish, callbacks
-assets/artwork/           # Branded genre cover art
-```
-
-## Getting started
-
-```bash
-npm install
-cp .env.example .env      # fill in tokens & secrets
-npm run build
-npm start                 # runs both bots + ingest
-```
-
-Dev: `npm run dev`. See `.env.example` for all required variables
-(bot tokens, shared secrets with the site, `FORZADJ_API_URL`).
-
-## Deployment
-
-Auto-deployed to **Railway** on push to `main` (`railway.json`). The moderation
-ingest listens on `0.0.0.0:$PORT` and is reachable via the service's public domain.
-
-## Related
-
-- **Website:** https://forzadj.ru
-- Part of the ForzaDJ ecosystem (site + publication bot + these bots).
+</div>
 
 ---
 
-© 2026 ForzaDJ. All rights reserved. Published for reference; not licensed for reuse.
+## Overview
+
+This repository houses the moderation and support bots for the **[ForzaDJ](https://github.com/hamidkazimov777-cmd/forzadj)** platform. 
+
+To maintain high quality on the platform, user-submitted tracks (edits, mashups, remixes) go through a moderation flow. 
+
+### Features:
+- **Track Moderation**: When a DJ submits a track on the web platform, it is routed to this bot. Admins can listen to the audio directly in Telegram and click **Edit**, **Publish**, or **Reject**.
+- **Support Ticketing**: Official contact form submissions from the website are delivered to the support bot for quick resolution.
+- **Integration**: The bot communicates with the main Next.js PostgreSQL database via secure API endpoints to update track statuses and notify users.
+
+---
+**Built by Hamid Kazimov** — Product Builder & Software Creator.  
+[Contact on Telegram](https://t.me/hamidkazim)
